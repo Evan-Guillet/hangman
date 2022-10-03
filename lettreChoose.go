@@ -12,3 +12,16 @@ func LettreChoose() string { //func that return a string contane what user write
 	text, _ := reader.ReadString('\n')
 	return text
 }
+func IsPresent(word string, lettreChoose string) bool {
+	if len(lettreChoose) > 1 && word == lettreChoose {
+		return true
+	}
+	for _, valueWord := range word {
+		for _, valueLettreChoose := range lettreChoose {
+			if string(valueWord) == string(valueLettreChoose) {
+				return true
+			}
+		}
+	}
+	return false
+}
