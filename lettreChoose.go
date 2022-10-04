@@ -40,15 +40,14 @@ func FillHangman(attempts int, wordToFind string, wordUncomplet string) {
 		if IsPresent(wordToFind, lettreChoose) == true {
 			fmt.Println(Reveal(wordToFind, wordUncomplet, lettreChoose))
 			wordUncomplet = Reveal(wordToFind, wordUncomplet, lettreChoose)
-			fmt.Print("Is present")
+			Position(attempts)
 		} else {
 			fmt.Println(Reveal(wordToFind, wordUncomplet, lettreChoose))
 			wordUncomplet = Reveal(wordToFind, wordUncomplet, lettreChoose)
-			fmt.Print("Is not present")
 			attempts--
+			Position(attempts)
 		}
 		fmt.Print("\n")
-		fmt.Println(attempts)
 		FillHangman(attempts, wordToFind, wordUncomplet)
 	}
 }
@@ -65,4 +64,104 @@ func Reveal(wordToFind string, wordUncomplet string, lettreChoose string) string
 		index++
 	}
 	return string(word)
+}
+
+func Position(i int) {
+	fmt.Println("\n")
+	switch i {
+	case 11:
+		fmt.Println("")
+	case 10:
+		fmt.Println("=========")
+	case 9:
+		fmt.Println(
+			"       |  \n",
+			"      |  \n",
+			"      |  \n",
+			"      |  \n",
+			"      |  \n",
+			"=========",
+		)
+	case 8:
+		fmt.Println(
+			"  +---+  \n",
+			"     |  \n",
+			"     |  \n",
+			"     |  \n",
+			"     |  \n",
+			"     |  \n",
+			"=========",
+		)
+	case 7:
+		fmt.Println(
+			"   +---+  \n",
+			"  |   | \n",
+			"      |  \n",
+			"      |  \n",
+			"      |  \n",
+			"      |  \n",
+			"=========",
+		)
+	case 6:
+		fmt.Println(
+			"   +---+  \n",
+			"  |   | \n",
+			"  O   |  \n",
+			"      |  \n",
+			"      |  \n",
+			"      |  \n",
+			"=========",
+		)
+	case 5:
+		fmt.Println(
+			"   +---+  \n",
+			"  |   | \n",
+			"  O   |  \n",
+			"  |   |  \n",
+			"      |  \n",
+			"      |  \n",
+			"=========",
+		)
+	case 4:
+		fmt.Println(
+			"   +---+  \n",
+			"  |   | \n",
+			"  O   |  \n",
+			" /|   | \n",
+			"      |  \n",
+			"      |  \n",
+			"=========",
+		)
+	case 3:
+		fmt.Println(
+			"   +---+  \n",
+			"  |   | \n",
+			"  O   |  \n",
+			" /|\\  |  \n",
+			"      |  \n",
+			"      |  \n",
+			"=========",
+		)
+	case 2:
+		fmt.Println(
+			"  +---+  \n",
+			"  |   | \n",
+			"  O   |  \n",
+			" /|\\  |  \n",
+			" /    |  \n",
+			"      |  \n",
+			"=========",
+		)
+	case 1:
+		fmt.Println(
+			"  +---+  \n",
+			"  |   | \n",
+			"  O   |  \n",
+			" /|\\  |  \n",
+			" / \\  |  \n",
+			"      |  \n",
+			"=========",
+		)
+	}
+
 }
