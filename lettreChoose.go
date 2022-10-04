@@ -39,8 +39,12 @@ func FillHangman(attempts int, wordToFind string, wordUncomplet string) {
 	if attempts > 0 {
 		if IsPresent(wordToFind, lettreChoose) == true {
 			fmt.Println(Reveal(wordToFind, wordUncomplet, lettreChoose))
+			wordUncomplet = Reveal(wordToFind, wordUncomplet, lettreChoose)
+			fmt.Print("Is present")
 		} else {
-			fmt.Print("is not present")
+			fmt.Println(Reveal(wordToFind, wordUncomplet, lettreChoose))
+			wordUncomplet = Reveal(wordToFind, wordUncomplet, lettreChoose)
+			fmt.Print("Is not present")
 			attempts--
 		}
 		fmt.Print("\n")

@@ -12,6 +12,6 @@ func main () {
 	firstOutcome := hangman.UncompletedWord(word)
 	fmt.Println(firstOutcome)
 	attempts := 10
-	fmt.Println(hangman.FillHangman(attempts, word, firstOutcome))
+	hangman.FillHangman(attempts, word, firstOutcome)
 
 }
