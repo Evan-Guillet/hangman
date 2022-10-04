@@ -27,9 +27,24 @@ func IsPresent(wordToFind string, lettreChoose string) bool { // func returne tr
 	return false
 }
 
-func GameOver(attempts int) bool {
-	if attempts == 0 {
-		return true
+// func GameOver(attempts int) bool {
+// 	if attempts == 0 {
+// 		return true
+// 	}
+// 	return false
+// }
+
+func FillHangman(attempts int, wordToFind string) {
+	lettreChoose := LettreChoose()
+	if attempts > 0 {
+		if IsPresent(wordToFind, lettreChoose) == true {
+			fmt.Print("is present")
+		} else {
+			fmt.Print("is not present")
+			attempts--
+		}
+		fmt.Print("\n")
+		fmt.Println(attempts)
+		FillHangman(attempts, wordToFind)
 	}
-	return false
 }
