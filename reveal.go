@@ -1,6 +1,6 @@
 package hangman
 
-func Reveal(wordToFind string, wordUncomplet string, lettreChoose string) string {
+/*func Reveal(wordToFind string, wordUncomplet string, lettreChoose string) string {
 	word := []rune(wordUncomplet)
 	index := 0
 	for _, letter := range wordToFind {
@@ -13,3 +13,4 @@ func Reveal(wordToFind string, wordUncomplet string, lettreChoose string) string
 	}
 	return string(word)
 }
+*/

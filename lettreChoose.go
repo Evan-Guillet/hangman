@@ -34,17 +34,31 @@ func IsPresent(wordToFind string, lettreChoose string) bool { // func returne tr
 // 	return false
 // }
 
-func FillHangman(attempts int, wordToFind string) {
+func FillHangman(attempts int, wordToFind string, wordUncomplet string) {
 	lettreChoose := LettreChoose()
 	if attempts > 0 {
 		if IsPresent(wordToFind, lettreChoose) == true {
-			fmt.Print("is present")
+			fmt.Println(Reveal(wordToFind, wordUncomplet, lettreChoose))
 		} else {
 			fmt.Print("is not present")
 			attempts--
 		}
 		fmt.Print("\n")
 		fmt.Println(attempts)
-		FillHangman(attempts, wordToFind)
+		FillHangman(attempts, wordToFind, wordUncomplet)
 	}
+}
+
+func Reveal(wordToFind string, wordUncomplet string, lettreChoose string) string {
+	word := []rune(wordUncomplet)
+	index := 0
+	for _, letter := range wordToFind {
+		for _, valueLettreChoose := range lettreChoose {
+			if string(letter) == string(valueLettreChoose) {
+				word[index] = rune(letter)
+			}
+		}
+		index++
+	}
+	return string(word)
 }
