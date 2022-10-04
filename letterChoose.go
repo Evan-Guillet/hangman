@@ -7,18 +7,18 @@ import (
 )
 
 func LettreChoose() string { //func that return a string contane what user write in terminal
-	fmt.Print("choisi une lettre :")
+	fmt.Print("choisi une letter :")
 	reader := bufio.NewReader(os.Stdin)
 	text, _ := reader.ReadString('\n')
 	return text
 }
 
-func IsPresent(wordToFind string, lettreChoose string) bool { // func returne true if lettre choose by user is present in word to find
-	if len(lettreChoose) > 1 && wordToFind == lettreChoose {
+func IsPresent(wordToFind string, letterChoose string) bool { // func returne true if letter choose by user is present in word to find
+	if len(letterChoose) > 1 && wordToFind == letterChoose {
 		return true
 	}
 	for _, valueWord := range wordToFind {
-		for _, valueLettreChoose := range lettreChoose {
+		for _, valueLettreChoose := range letterChoose {
 			if string(valueWord) == string(valueLettreChoose) {
 				return true
 			}
@@ -35,15 +35,15 @@ func IsPresent(wordToFind string, lettreChoose string) bool { // func returne tr
 // }
 
 func FillHangman(attempts int, wordToFind string, wordUncomplet string) {
-	lettreChoose := LettreChoose()
+	letterChoose := LettreChoose()
 	if attempts > 0 {
-		if IsPresent(wordToFind, lettreChoose) == true {
-			fmt.Println(Reveal(wordToFind, wordUncomplet, lettreChoose))
-			wordUncomplet = Reveal(wordToFind, wordUncomplet, lettreChoose)
+		if IsPresent(wordToFind, letterChoose) == true {
+			fmt.Println(Reveal(wordToFind, wordUncomplet, letterChoose))
+			wordUncomplet = Reveal(wordToFind, wordUncomplet, letterChoose)
 			Position(attempts)
 		} else {
-			fmt.Println(Reveal(wordToFind, wordUncomplet, lettreChoose))
-			wordUncomplet = Reveal(wordToFind, wordUncomplet, lettreChoose)
+			fmt.Println(Reveal(wordToFind, wordUncomplet, letterChoose))
+			wordUncomplet = Reveal(wordToFind, wordUncomplet, letterChoose)
 			attempts--
 			Position(attempts)
 		}
@@ -52,11 +52,11 @@ func FillHangman(attempts int, wordToFind string, wordUncomplet string) {
 	}
 }
 
-func Reveal(wordToFind string, wordUncomplet string, lettreChoose string) string {
+func Reveal(wordToFind string, wordUncomplet string, letterChoose string) string {
 	word := []rune(wordUncomplet)
 	index := 0
 	for _, letter := range wordToFind {
-		for _, valueLettreChoose := range lettreChoose {
+		for _, valueLettreChoose := range letterChoose {
 			if string(letter) == string(valueLettreChoose) {
 				word[index] = rune(letter)
 			}
