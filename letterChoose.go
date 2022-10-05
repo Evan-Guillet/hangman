@@ -27,13 +27,6 @@ func IsPresent(wordToFind string, letterChoose string) bool { // func returne tr
 	return false
 }
 
-// func GameOver(attempts int) bool {
-// 	if attempts == 0 {
-// 		return true
-// 	}
-// 	return false
-// }
-
 func FillHangman( wordToFind string, wordUncomplet string) string {
 	attempts := 11
 	for attempts > 0 {
@@ -171,12 +164,12 @@ func Position(i int) {
 
 }
 
-func WinOrLoose (attempts int, wordToFind string ) string {
+func WinOrLoose(attempts int, wordToFind string ) string {
 	var endPrint string
 	if attempts == 0 {
 		endPrint = "Dommage ! Vous avez perdu, le mot était :" + wordToFind
 	} else {
-		endPrint = ("Bravo ! Vous avez gagné, le mot était :" + wordToFind)
+		endPrint = "Bravo ! Vous avez gagné, le mot était :" + wordToFind
 	}
 	return endPrint
 }
