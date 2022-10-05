@@ -34,9 +34,10 @@ func IsPresent(wordToFind string, letterChoose string) bool { // func returne tr
 // 	return false
 // }
 
-func FillHangman(attempts int, wordToFind string, wordUncomplet string) {
-	letterChoose := LettreChoose()
-	if attempts > 0 {
+func FillHangman( wordToFind string, wordUncomplet string) string {
+	attempts := 11
+	for attempts > 0 {
+		letterChoose := LettreChoose()
 		if IsPresent(wordToFind, letterChoose) == true {
 			fmt.Println(Reveal(wordToFind, wordUncomplet, letterChoose))
 			wordUncomplet = Reveal(wordToFind, wordUncomplet, letterChoose)
@@ -45,11 +46,15 @@ func FillHangman(attempts int, wordToFind string, wordUncomplet string) {
 			fmt.Println(Reveal(wordToFind, wordUncomplet, letterChoose))
 			wordUncomplet = Reveal(wordToFind, wordUncomplet, letterChoose)
 			attempts--
+			fmt.Println(attempts)
 			Position(attempts)
 		}
 		fmt.Print("\n")
-		FillHangman(attempts, wordToFind, wordUncomplet)
+		if wordUncomplet == wordToFind {
+			return WinOrLoose(attempts, wordToFind)
+		}
 	}
+	return WinOrLoose(attempts,wordToFind)
 }
 
 func Reveal(wordToFind string, wordUncomplet string, letterChoose string) string {
@@ -164,4 +169,14 @@ func Position(i int) {
 		)
 	}
 
+}
+
+func WinOrLoose (attempts int, wordToFind string ) string {
+	var endPrint string
+	if attempts == 0 {
+		endPrint = "Dommage ! Vous avez perdu, le mot était :" + wordToFind
+	} else {
+		endPrint = ("Bravo ! Vous avez gagné, le mot était :" + wordToFind)
+	}
+	return endPrint
 }

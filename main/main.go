@@ -11,7 +11,6 @@ func main () {
 	word := hangman.ChooseWord(file)
 	firstOutcome := hangman.UncompletedWord(word)
 	fmt.Println(firstOutcome)
-	attempts := 11
-	hangman.FillHangman(attempts, word, firstOutcome)
+	fmt.Println(hangman.FillHangman( word, firstOutcome))
 
 }
