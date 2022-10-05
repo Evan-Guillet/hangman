@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func LettreChoose() string { //func that return a string contane what user write in terminal
@@ -29,8 +30,13 @@ func IsPresent(wordToFind string, letterChoose string) bool { // func returne tr
 
 func FillHangman( wordToFind string, wordUncomplet string) string {
 	attempts := 11
+	var wordSaid string
+	var said []string
 	for attempts > 0 {
 		letterChoose := LettreChoose()
+		wordSaid = wordSaid + letterChoose
+		said = strings.Split(wordSaid, "\n")
+		fmt.Print(said,"\n")
 		if IsPresent(wordToFind, letterChoose) == true {
 			fmt.Println(Reveal(wordToFind, wordUncomplet, letterChoose))
 			wordUncomplet = Reveal(wordToFind, wordUncomplet, letterChoose)
