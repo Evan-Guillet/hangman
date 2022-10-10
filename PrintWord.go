@@ -32,12 +32,3 @@ func UncompletedWord(word string) string {
 	return string(manip)
 }
 
-func Display(answer string) string {
-	displayword := []rune(answer)
-	var result string
-	for i := 0; i < len(displayword); i++ {
-		result += string(displayword[i])
-		result += " "
-	}
-	return result
-}

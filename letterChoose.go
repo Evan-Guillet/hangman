@@ -4,44 +4,45 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
-func LettreChoose() string { //func that return a string contane what user write in terminal
+func LetterChoose() string { //func that return a string contane what user write in terminal
 	fmt.Print("choisi une letter :")
 	reader := bufio.NewReader(os.Stdin)
 	text, _ := reader.ReadString('\n')
 	return text
 }
+
 func IsPresent(wordToFind string, letterChoose string) bool { // func returne true if letter choose by user is present in word to find
-	//fmt.Print(len(letterChoose))
-	if len(letterChoose) > 2 {
-		if wordToFind != letterChoose {
-			return false
-		} else {
-			return true
-		}
-	} else {
-		for _, valueWord := range wordToFind {
-			for _, valueLettreChoose := range letterChoose {
-				if string(valueWord) == string(valueLettreChoose) {
-					return true
-				}
+	if len(letterChoose) > 1 && wordToFind == letterChoose {
+		return true
+	}
+	for _, valueWord := range wordToFind {
+		for _, valueLettreChoose := range letterChoose {
+			if string(valueWord) == string(valueLettreChoose) {
+				return true
 			}
 		}
 	}
-
 	return false
 }
-func FillHangman(wordToFind string, wordUncomplet string) string {
+
+func FillHangman( wordToFind string, wordUncomplet string) string {
 	attempts := 11
-	for attempts > 0 {
-		letterChoose := LettreChoose()
+	var wordSaid string
+	var said []string
+	for attempts > 1 {
+		letterChoose := LetterChoose()
+		wordSaid = wordSaid + letterChoose
+		said = strings.Split(wordSaid, "\n")
+		fmt.Print(said,"\n")
 		if IsPresent(wordToFind, letterChoose) == true {
-			fmt.Println(Reveal(wordToFind, wordUncomplet, letterChoose))
+			fmt.Println(Display(Reveal(wordToFind, wordUncomplet, letterChoose)))
 			wordUncomplet = Reveal(wordToFind, wordUncomplet, letterChoose)
 			Position(attempts)
 		} else {
-			fmt.Println(Reveal(wordToFind, wordUncomplet, letterChoose))
+			fmt.Println(Display(Reveal(wordToFind, wordUncomplet, letterChoose)))
 			wordUncomplet = Reveal(wordToFind, wordUncomplet, letterChoose)
 			attempts--
 			fmt.Println(attempts)
@@ -52,8 +53,9 @@ func FillHangman(wordToFind string, wordUncomplet string) string {
 			return WinOrLoose(attempts, wordToFind)
 		}
 	}
-	return WinOrLoose(attempts, wordToFind)
+	return WinOrLoose(attempts,wordToFind)
 }
+
 func Reveal(wordToFind string, wordUncomplet string, letterChoose string) string {
 	word := []rune(wordUncomplet)
 	index := 0
@@ -67,6 +69,7 @@ func Reveal(wordToFind string, wordUncomplet string, letterChoose string) string
 	}
 	return string(word)
 }
+
 func Position(i int) {
 	fmt.Println("\n")
 	switch i {
@@ -164,8 +167,10 @@ func Position(i int) {
 			"=========",
 		)
 	}
+
 }
-func WinOrLoose(attempts int, wordToFind string) string {
+
+func WinOrLoose(attempts int, wordToFind string ) string {
 	var endPrint string
 	if attempts == 0 {
 		endPrint = "Dommage ! Vous avez perdu, le mot était :" + wordToFind
@@ -173,4 +178,14 @@ func WinOrLoose(attempts int, wordToFind string) string {
 		endPrint = "Bravo ! Vous avez gagné, le mot était :" + wordToFind
 	}
 	return endPrint
+}
+
+func Display(answer string) string {
+	displayword := []rune(answer)
+	var result string
+	for i := 0; i < len(displayword); i++ {
+		result += string(displayword[i])
+		result += " "
+	}
+	return result
 }
