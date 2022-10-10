@@ -36,7 +36,8 @@ func FillHangman( wordToFind string, wordUncomplet string) string {
 		letterChoose := LetterChoose()
 		wordSaid = wordSaid + letterChoose
 		said = strings.Split(wordSaid, "\n")
-		fmt.Print(said,"\n")
+		wordString := strings.Join(said," ")
+		fmt.Println("Already tried :",wordString,"\n")
 		if IsPresent(wordToFind, letterChoose) == true {
 			fmt.Println(Display(Reveal(wordToFind, wordUncomplet, letterChoose)))
 			wordUncomplet = Reveal(wordToFind, wordUncomplet, letterChoose)
