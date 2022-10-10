@@ -32,30 +32,42 @@ func IsPresent(wordToFind string, letterChoose string) bool { // func returne tr
 
 	return false
 }
-func FillHangman(wordToFind string, wordUncomplet string) string {
+
+func VerifeChar(wordToFind string, wordUncomplet string) string {
 	attempts := 11
-	for attempts > 0 {
+	wordInProgresse := wordUncomplet
+	for attempts > 2 {
 		letterChoose := LettreChoose()
 		if IsPresent(wordToFind, letterChoose) == true {
-			fmt.Println(Reveal(wordToFind, wordUncomplet, letterChoose))
-			wordUncomplet = Reveal(wordToFind, wordUncomplet, letterChoose)
+			if letterChoose == "e" {
+				wordInProgresse = Reveal(wordToFind, wordInProgresse, "e")
+				wordInProgresse = Reveal(wordToFind, wordInProgresse, "é")
+				wordInProgresse = Reveal(wordToFind, wordInProgresse, "è")
+			} else if letterChoose == "c" {
+				wordInProgresse = Reveal(wordToFind, wordInProgresse, "c")
+				wordInProgresse = Reveal(wordToFind, wordInProgresse, "ç")
+			} else {
+				wordInProgresse = Reveal(wordToFind, wordInProgresse, letterChoose)
+			}
+			fmt.Println(wordInProgresse)
 			Position(attempts)
 		} else {
-			fmt.Println(Reveal(wordToFind, wordUncomplet, letterChoose))
-			wordUncomplet = Reveal(wordToFind, wordUncomplet, letterChoose)
+			fmt.Println(Reveal(wordToFind, wordInProgresse, letterChoose))
+			wordInProgresse = Reveal(wordToFind, wordInProgresse, letterChoose)
 			attempts--
 			fmt.Println(attempts)
 			Position(attempts)
 		}
 		fmt.Print("\n")
-		if wordUncomplet == wordToFind {
+		if wordInProgresse == wordToFind {
 			return WinOrLoose(attempts, wordToFind)
 		}
 	}
 	return WinOrLoose(attempts, wordToFind)
 }
-func Reveal(wordToFind string, wordUncomplet string, letterChoose string) string {
-	word := []rune(wordUncomplet)
+
+func Reveal(wordToFind string, wordInProgresse string, letterChoose string) string {
+	word := []rune(wordInProgresse)
 	index := 0
 	for _, letter := range wordToFind {
 		for _, valueLettreChoose := range letterChoose {
@@ -67,8 +79,9 @@ func Reveal(wordToFind string, wordUncomplet string, letterChoose string) string
 	}
 	return string(word)
 }
+
 func Position(i int) {
-	fmt.Println("\n")
+	fmt.Println("")
 	switch i {
 	case 11:
 		fmt.Println("")
@@ -165,6 +178,7 @@ func Position(i int) {
 		)
 	}
 }
+
 func WinOrLoose(attempts int, wordToFind string) string {
 	var endPrint string
 	if attempts == 0 {

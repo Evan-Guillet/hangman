@@ -11,5 +11,5 @@ func main() {
 	word := hangman.ChooseWord(file)
 	firstOutcome := hangman.UncompletedWord(word)
 	fmt.Println(firstOutcome)
-	fmt.Println(hangman.FillHangman(word, firstOutcome))
+	fmt.Println(hangman.VerifeChar(word, firstOutcome))
 }
