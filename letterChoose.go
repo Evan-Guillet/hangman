@@ -29,6 +29,9 @@ func IsPresent(wordToFind string, letterChoose string) bool { // func returne tr
 }
 
 func FillHangman( wordToFind string, wordUncomplet string) string {
+	colorReset := "\033[0m"
+	colorGreen := "\033[1;31m"
+	colorRed := "\033[1;32m"
 	attempts := 11
 	var wordSaid string
 	var said []string
@@ -39,15 +42,18 @@ func FillHangman( wordToFind string, wordUncomplet string) string {
 		wordString := strings.Join(said," ")
 		fmt.Println("Already tried :",wordString,"\n")
 		if IsPresent(wordToFind, letterChoose) == true {
-			fmt.Println(Display(Reveal(wordToFind, wordUncomplet, letterChoose)))
+			fmt.Println(Reveal(wordToFind, wordUncomplet, letterChoose))
 			wordUncomplet = Reveal(wordToFind, wordUncomplet, letterChoose)
 			Position(attempts)
+			
+			fmt.Println(string(colorRed),"__________________________________________",string(colorReset))
 		} else {
-			fmt.Println(Display(Reveal(wordToFind, wordUncomplet, letterChoose)))
+			fmt.Println(Reveal(wordToFind, wordUncomplet, letterChoose))
 			wordUncomplet = Reveal(wordToFind, wordUncomplet, letterChoose)
 			attempts--
 			fmt.Println(attempts)
 			Position(attempts)
+			fmt.Println(string(colorGreen),"__________________________________________",string(colorReset))
 		}
 		fmt.Print("\n")
 		if wordUncomplet == wordToFind {
@@ -179,14 +185,4 @@ func WinOrLoose(attempts int, wordToFind string ) string {
 		endPrint = "Bravo ! Vous avez gagné, le mot était :" + wordToFind
 	}
 	return endPrint
-}
-
-func Display(answer string) string {
-	displayword := []rune(answer)
-	var result string
-	for i := 0; i < len(displayword); i++ {
-		result += string(displayword[i])
-		result += " "
-	}
-	return result
 }
