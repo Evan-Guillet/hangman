@@ -34,3 +34,4 @@ rampe
 recreation
 rentree
 toilette
+mot
