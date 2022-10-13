@@ -16,7 +16,6 @@ func RandomLetter(word string) []int {
 	}
 	return index
 }
-
 func UncompletedWord(word string) string {
 	var underscore string
 	for i := 0; i < len(word); i++ {
@@ -28,7 +27,5 @@ func UncompletedWord(word string) string {
 	for i := 0; i < len(index); i++ {
 		manip[index[i]] = wordRune[index[i]]
 	}
-
 	return string(manip)
 }
-

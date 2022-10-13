@@ -1,16 +1,15 @@
 package main
 
 import (
-	"io/ioutil"
-	"hangman"
 	"fmt"
+	"hangman"
+	"io/ioutil"
 )
 
-func main () {
-	file,_ := ioutil.ReadFile("../words.txt")
+func main() {
+	file, _ := ioutil.ReadFile("../words.txt")
 	word := hangman.ChooseWord(file)
 	firstOutcome := hangman.UncompletedWord(word)
 	fmt.Println(firstOutcome)
-	fmt.Println(hangman.FillHangman( word, firstOutcome))
-
+	fmt.Println(hangman.VerifeChar(word, firstOutcome))
 }
