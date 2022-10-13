@@ -8,8 +8,12 @@ import (
 	"strings"
 )
 
+const colorRed = "\033[1;31m"
+const colorGreen = "\033[1;32m"
+const colorReset = "\033[0m"
+
 func LetterChoose() string { //func that return a string contane what user write in terminal
-	fmt.Print("choisi une letter :")
+	fmt.Print("choose a letter :")
 	reader := bufio.NewReader(os.Stdin)
 	text, _ := reader.ReadString('\n')
 
@@ -65,6 +69,8 @@ func AlreadySaid(letterChoose string, wordSaid string) string {
 			said = strings.Split(wordSaid, "\n")
 			wordString := strings.Join(said, " ")
 			fmt.Println("Already tried :", wordString, "\n")
+		} else {
+
 		}
 	}
 	return wordSaid
@@ -72,24 +78,21 @@ func AlreadySaid(letterChoose string, wordSaid string) string {
 }
 
 func VerifeChar(wordToFind string, wordUncomplet string) string {
-	colorReset := "\033[0m"
-	colorRed := "\033[1;31m"
-	colorGreen := "\033[1;32m"
 	attempts := 11
 	var wordSaid string
 	wordInProgresse := wordUncomplet
 	for attempts > 1 {
 		letterChoose := LetterChoose()
-		letterChoose = strings.Replace(letterChoose, "\n", "", -1)
 		wordSaid = AlreadySaid(letterChoose, wordSaid)
+		letterChoose = strings.Replace(letterChoose, "\n", "", -1)
+		wordInProgresse = Reveal(wordToFind, wordInProgresse, letterChoose)
+		fmt.Println(wordInProgresse)
+		fmt.Println()
 		if IsPresent(wordToFind, letterChoose) == true {
-			wordInProgresse = Reveal(wordToFind, wordInProgresse, letterChoose)
-			fmt.Println(wordInProgresse)
 			Position(attempts)
 			fmt.Println(string(colorGreen), "__________________________________________", string(colorReset))
 			fmt.Println("remaining try :", attempts-1)
 		} else {
-			fmt.Print(wordInProgresse)
 			attempts--
 			Position(attempts)
 			fmt.Println(string(colorRed), "__________________________________________", string(colorReset))
