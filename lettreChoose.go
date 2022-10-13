@@ -22,7 +22,7 @@ func LetterChoose() string { //func that return a string contane what user write
 	return text
 }
 func IsPresent(wordToFind string, letterChoose string) bool { // func returne true if letter choose by user is present in word to find
-	if len(letterChoose) > 2 {
+	if len(letterChoose) > 1 {
 		for ii, valueLetterChoose := range letterChoose {
 			for jj, valueWordToFind := range wordToFind {
 				if ii == jj && valueWordToFind != valueLetterChoose {
@@ -47,11 +47,21 @@ func IsPresent(wordToFind string, letterChoose string) bool { // func returne tr
 func AlreadySaid(letterChoose string, wordSaid string) string {
 
 	var said []string
-	wordSaid = wordSaid + letterChoose
-	said = strings.Split(wordSaid, "\n")
-	wordString := strings.Join(said, " ")
-	fmt.Println("Already tried :", wordString, "\n")
+	if len(letterChoose) == 1 {
+		for _, valueWordSaid := range wordSaid {
+			if letterChoose == string(valueWordSaid) {
+				return wordSaid
+			}
+
+		}
+	} else {
+		wordSaid = wordSaid + letterChoose
+		said = strings.Split(wordSaid, "\n")
+		wordString := strings.Join(said, " ")
+		fmt.Println("Already tried :", wordString, "\n")
+	}
 	return wordSaid
+
 }
 
 func VerifeChar(wordToFind string, wordUncomplet string) string {
@@ -67,6 +77,7 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 		wordSaid = AlreadySaid(letterChoose, wordSaid)
 		if IsPresent(wordToFind, letterChoose) == true {
 			wordInProgresse = Reveal(wordToFind, wordInProgresse, letterChoose)
+			fmt.Println(wordInProgresse)
 			Position(attempts)
 			fmt.Println(string(colorGreen), "__________________________________________", string(colorReset))
 			fmt.Println("remaining try :", attempts-1)
@@ -88,17 +99,15 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 func Reveal(wordToFind string, wordInProgresse string, letterChoose string) string {
 	word := []rune(wordInProgresse)
 	index := 0
-	if len(letterChoose) > 2 {
-		if len(letterChoose) > 2 {
-			for ii, valueLetterChoose := range letterChoose {
-				for jj, valueWordToFind := range wordToFind {
-					if ii == jj && valueWordToFind != valueLetterChoose {
-						return wordInProgresse
-					}
+	if len(letterChoose) > 1 {
+		for ii, valueLetterChoose := range letterChoose {
+			for jj, valueWordToFind := range wordToFind {
+				if ii == jj && valueWordToFind != valueLetterChoose {
+					return wordInProgresse
 				}
 			}
-			return wordToFind
 		}
+		return wordToFind
 	} else {
 
 		for _, letter := range wordToFind {
