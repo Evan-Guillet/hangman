@@ -45,7 +45,7 @@ func IsPresent(wordToFind string, letterChoose string) bool { // func returne tr
 }
 
 func AlreadySaid(letterChoose string, wordSaid string) string {
-
+	err := false
 	var said []string
 	if len(letterChoose) == 1 {
 		for _, valueWordSaid := range wordSaid {
@@ -55,10 +55,17 @@ func AlreadySaid(letterChoose string, wordSaid string) string {
 
 		}
 	} else {
-		wordSaid = wordSaid + letterChoose
-		said = strings.Split(wordSaid, "\n")
-		wordString := strings.Join(said, " ")
-		fmt.Println("Already tried :", wordString, "\n")
+		for _, valueLetterChoose := range letterChoose {
+			if valueLetterChoose == ' ' {
+				err = true
+			}
+		}
+		if err == false {
+			wordSaid = wordSaid + letterChoose
+			said = strings.Split(wordSaid, "\n")
+			wordString := strings.Join(said, " ")
+			fmt.Println("Already tried :", wordString, "\n")
+		}
 	}
 	return wordSaid
 
