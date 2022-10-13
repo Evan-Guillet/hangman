@@ -22,14 +22,22 @@ func LetterChoose() string { //func that return a string contane what user write
 	return text
 }
 func IsPresent(wordToFind string, letterChoose string) bool { // func returne true if letter choose by user is present in word to find
-	//fmt.Print(len(letterChoose))
-	if len(letterChoose) > 1 && wordToFind == letterChoose {
+	if len(letterChoose) > 2 {
+		for ii, valueLetterChoose := range letterChoose {
+			for jj, valueWordToFind := range wordToFind {
+				if ii == jj && valueWordToFind != valueLetterChoose {
+					return false
+				}
+			}
+		}
 		return true
-	}
-	for _, valueWord := range wordToFind {
-		for _, valueLettreChoose := range letterChoose {
-			if string(valueWord) == string(valueLettreChoose) {
-				return true
+	} else {
+
+		for _, valueWord := range wordToFind {
+			for _, valueLettreChoose := range letterChoose {
+				if string(valueWord) == string(valueLettreChoose) {
+					return true
+				}
 			}
 		}
 	}
@@ -48,26 +56,25 @@ func AlreadySaid(letterChoose string, wordSaid string) string {
 
 func VerifeChar(wordToFind string, wordUncomplet string) string {
 	colorReset := "\033[0m"
-	colorGreen := "\033[1;31m"
-	colorRed := "\033[1;32m"
+	colorRed := "\033[1;31m"
+	colorGreen := "\033[1;32m"
 	attempts := 11
 	var wordSaid string
 	wordInProgresse := wordUncomplet
 	for attempts > 1 {
 		letterChoose := LetterChoose()
+		letterChoose = strings.Replace(letterChoose, "\n", "", -1)
 		wordSaid = AlreadySaid(letterChoose, wordSaid)
 		if IsPresent(wordToFind, letterChoose) == true {
 			wordInProgresse = Reveal(wordToFind, wordInProgresse, letterChoose)
-			fmt.Println(wordInProgresse)
-			Position(attempts)
-			fmt.Println(string(colorRed), "__________________________________________", string(colorReset))
-			fmt.Println("remaining try :", attempts-1)
-		} else {
-			fmt.Println(Reveal(wordToFind, wordInProgresse, letterChoose))
-			wordInProgresse = Reveal(wordToFind, wordInProgresse, letterChoose)
-			attempts--
 			Position(attempts)
 			fmt.Println(string(colorGreen), "__________________________________________", string(colorReset))
+			fmt.Println("remaining try :", attempts-1)
+		} else {
+			fmt.Print(wordInProgresse)
+			attempts--
+			Position(attempts)
+			fmt.Println(string(colorRed), "__________________________________________", string(colorReset))
 			fmt.Println("remaining try :", attempts-1)
 		}
 		fmt.Print("\n")
@@ -81,13 +88,27 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 func Reveal(wordToFind string, wordInProgresse string, letterChoose string) string {
 	word := []rune(wordInProgresse)
 	index := 0
-	for _, letter := range wordToFind {
-		for _, valueLettreChoose := range letterChoose {
-			if string(letter) == string(valueLettreChoose) {
-				word[index] = rune(letter)
+	if len(letterChoose) > 2 {
+		if len(letterChoose) > 2 {
+			for ii, valueLetterChoose := range letterChoose {
+				for jj, valueWordToFind := range wordToFind {
+					if ii == jj && valueWordToFind != valueLetterChoose {
+						return wordInProgresse
+					}
+				}
 			}
+			return wordToFind
 		}
-		index++
+	} else {
+
+		for _, letter := range wordToFind {
+			for _, valueLettreChoose := range letterChoose {
+				if string(letter) == string(valueLettreChoose) {
+					word[index] = rune(letter)
+				}
+			}
+			index++
+		}
 	}
 	return string(word)
 }
