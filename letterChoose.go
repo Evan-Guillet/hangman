@@ -78,13 +78,11 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 		if IsPresent(wordToFind, letterChoose) == true {
 			wordInProgresse = Reveal(wordToFind, wordInProgresse, letterChoose)
 			fmt.Println(wordInProgresse)
-
 			Position(attempts)
 			fmt.Println(string(colorGreen), "__________________________________________", string(colorReset))
 			fmt.Println("remaining try :", attempts-1)
 		} else {
-			fmt.Println(wordInProgresse)
-			fmt.Print("\n")
+			fmt.Print(wordInProgresse)
 			attempts--
 			Position(attempts)
 			fmt.Println(string(colorRed), "__________________________________________", string(colorReset))
