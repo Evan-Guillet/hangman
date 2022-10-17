@@ -120,8 +120,9 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 			fmt.Println(string(colorRed), "__________________________________________", string(colorReset))
 		}
 		
+		fmt.Println()
 		fmt.Println("remaining try :", attempts-1)
-		fmt.Print("\n")
+		fmt.Println("\n\n")
 		if wordInProgresse == wordToFind {
 			return WinOrLoose(attempts, wordToFind)
 		}
