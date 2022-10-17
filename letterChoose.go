@@ -96,7 +96,7 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 		wordSaid = AlreadySaid(letterChoose, wordSaid)
 		letterChoose = strings.Replace(letterChoose, "\n", "", -1)
 		wordInProgresse = Reveal(wordToFind, wordInProgresse, letterChoose)
-		fmt.Println(wordInProgresse)
+		AsciiArt(wordInProgresse)
 		fmt.Println()
 		
 
@@ -171,4 +171,27 @@ func WinOrLoose(attempts int, wordToFind string) string {
 		endPrint = "Bravo ! Vous avez gagné, le mot était :" + wordToFind
 	}
 	return endPrint
+}
+
+
+func AsciiArt(wordUncomplet string) {
+	fileIncome,_ := ioutil.ReadFile("../standard.txt")
+	file := strings.Split(string(fileIncome), ",,")
+	var letter []string
+	word := []rune(wordUncomplet)
+	var art string
+	for j := 0; j < 8; j++ {
+		for k := 0; k < len(word); k++ {
+			if word[k] >= 'a' && word[k] <= 'z'{
+				difference := int(word[k]) - int('a')
+				letter = strings.Split(string(file[33+difference]), "\n")
+				art += strings.Replace(letter[j], "\r", "", -1)
+			} else {
+				letter = strings.Split(string(file[63]), "\n")
+				art += strings.Replace(letter[j], "\r", "", -1)
+			}
+		}
+		art += "\n"
+	}
+	fmt.Println(art)
 }
