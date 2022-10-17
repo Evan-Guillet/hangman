@@ -85,12 +85,15 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 		letter := []rune(letterChoose)
 		
 		for i := 0; i < len(wordSaid); i++ {
+			isSaid = false
 			if !isSaid {
 				if letter[0] == said[i] {
 					isSaid = true
-					
+					break
 				}
+				
 			}
+			
 		}
 		
 		wordSaid = AlreadySaid(letterChoose, wordSaid)
