@@ -52,19 +52,20 @@ func IsPresent(wordToFind string, letterChoose string) bool { // func returne tr
 func AlreadySaid(letterChoose string, wordSaid string) string {
 	err := false
 	var said []string
+	if letterChoose < "a" || letterChoose > "z" {
+		err = true
+	}
+		
+
 	if len(letterChoose) == 1 {
+		
+
 		for _, valueWordSaid := range wordSaid {
 			if letterChoose == string(valueWordSaid) {
 				return wordSaid
 			}
 		}
 	} else {
-		for _, valueLetterChoose := range letterChoose {
-			if valueLetterChoose < 'a' || valueLetterChoose > 'z' {
-				err = true
-				
-			}
-		}
 		if !err {
 			wordSaid = wordSaid + letterChoose
 			said = strings.Split(wordSaid, "\n")
