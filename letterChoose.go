@@ -15,13 +15,15 @@ const colorReset = "\033[0m"
 func LetterChoose() string { //func that return a string contane what user write in terminal
 	fmt.Print("choose a letter :")
 	reader := bufio.NewReader(os.Stdin)
-	text, _ := reader.ReadString('\n')
+	text, error := reader.ReadString('\n')
 
-	if text == "é\n" || text == "è\n" {
-		text = "e\n"
-	}
-	if text == "ç\n" {
-		text = "c\n"
+	if error == nil {
+		if text == "é\n" || text == "è\n" {
+			text = "e\n"
+		}
+		if text == "ç\n" {
+			text = "c\n"
+		}
 	}
 	return text
 }
@@ -36,7 +38,6 @@ func IsPresent(wordToFind string, letterChoose string) bool { // func returne tr
 		}
 		return true
 	} else {
-
 		for _, valueWord := range wordToFind {
 			for _, valueLettreChoose := range letterChoose {
 				if string(valueWord) == string(valueLettreChoose) {
@@ -56,7 +57,6 @@ func AlreadySaid(letterChoose string, wordSaid string) string {
 			if letterChoose == string(valueWordSaid) {
 				return wordSaid
 			}
-
 		}
 	} else {
 		for _, valueLetterChoose := range letterChoose {
@@ -64,40 +64,60 @@ func AlreadySaid(letterChoose string, wordSaid string) string {
 				err = true
 			}
 		}
-		if err == false {
+		if !err {
 			wordSaid = wordSaid + letterChoose
 			said = strings.Split(wordSaid, "\n")
 			wordString := strings.Join(said, " ")
-			fmt.Println("Already tried :", wordString, "\n")
-		} else {
-
-		}
+			fmt.Println("Already tried :", wordString)
+		} 
 	}
 	return wordSaid
-
 }
 
 func VerifeChar(wordToFind string, wordUncomplet string) string {
+	isSaid := false
 	attempts := 11
 	var wordSaid string
 	wordInProgresse := wordUncomplet
 	for attempts > 1 {
 		letterChoose := LetterChoose()
+		said := []rune(wordSaid)
+		letter := []rune(letterChoose)
+		
+		for i := 0; i < len(wordSaid); i++ {
+			if !isSaid {
+				if letter[0] == said[i] {
+					isSaid = true
+					
+				}
+			}
+		}
+		
 		wordSaid = AlreadySaid(letterChoose, wordSaid)
 		letterChoose = strings.Replace(letterChoose, "\n", "", -1)
 		wordInProgresse = Reveal(wordToFind, wordInProgresse, letterChoose)
 		fmt.Println(wordInProgresse)
 		fmt.Println()
-		if IsPresent(wordToFind, letterChoose) == true {
-			Position(attempts)
-			fmt.Println(string(colorGreen), "__________________________________________", string(colorReset))
-			fmt.Println("remaining try :", attempts-1)
+		
+
+		if !isSaid {	
+			if IsPresent(wordToFind, letterChoose) {
+				Position(attempts)
+				fmt.Println(string(colorGreen), "__________________________________________", string(colorReset))
+				
+			} else {
+				attempts--
+				Position(attempts)
+				fmt.Println(string(colorRed), "__________________________________________", string(colorReset))
+			}
 		} else {
+			fmt.Println(string(colorRed), "You already choose this letter", string(colorReset))
 			attempts--
 			Position(attempts)
 			fmt.Println(string(colorRed), "__________________________________________", string(colorReset))
-			fmt.Println("remaining try :", attempts-1)
 		}
+		
+		fmt.Println("remaining try :", attempts-1)
 		fmt.Print("\n")
 		if wordInProgresse == wordToFind {
 			return WinOrLoose(attempts, wordToFind)
@@ -119,7 +139,6 @@ func Reveal(wordToFind string, wordInProgresse string, letterChoose string) stri
 		}
 		return wordToFind
 	} else {
-
 		for _, letter := range wordToFind {
 			for _, valueLettreChoose := range letterChoose {
 				if string(letter) == string(valueLettreChoose) {
@@ -131,6 +150,7 @@ func Reveal(wordToFind string, wordInProgresse string, letterChoose string) stri
 	}
 	return string(word)
 }
+
 func Position(attempts int) {
 	hangFile, _ := ioutil.ReadFile("../hangman.txt")
 	file := strings.Split(string(hangFile), "\n\n")
