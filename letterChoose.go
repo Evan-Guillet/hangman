@@ -60,8 +60,9 @@ func AlreadySaid(letterChoose string, wordSaid string) string {
 		}
 	} else {
 		for _, valueLetterChoose := range letterChoose {
-			if valueLetterChoose == ' ' {
+			if valueLetterChoose < 'a' || valueLetterChoose > 'z' {
 				err = true
+				
 			}
 		}
 		if !err {
@@ -69,7 +70,9 @@ func AlreadySaid(letterChoose string, wordSaid string) string {
 			said = strings.Split(wordSaid, "\n")
 			wordString := strings.Join(said, " ")
 			fmt.Println("Already tried :", wordString)
-		} 
+		} else {
+			fmt.Println(string(colorRed), "You entered an invalid letter", string(colorReset))
+		}
 	}
 	return wordSaid
 }
@@ -81,6 +84,7 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 	wordInProgresse := wordUncomplet
 	for attempts > 1 {
 		letterChoose := LetterChoose()
+		fmt.Println()
 		said := []rune(wordSaid)
 		letter := []rune(letterChoose)
 		
