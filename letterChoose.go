@@ -50,14 +50,14 @@ func IsPresent(wordToFind string, letterChoose string) bool { // func returne tr
 }
 
 func AlreadySaid(letterChoose string, wordSaid string) string {
-	err := false
+	err := true
 	var said []string
-	if letterChoose < "a" || letterChoose > "z" {
-		err = true
+	if letterChoose >= "a" && letterChoose <= "z" {
+		err = false
 	}
-		
-
-	if len(letterChoose) == 1 {
+	
+	fmt.Println(len(letterChoose))
+	if len(letterChoose) > 2 {
 		
 
 		for _, valueWordSaid := range wordSaid {
@@ -66,13 +66,13 @@ func AlreadySaid(letterChoose string, wordSaid string) string {
 			}
 		}
 	} else {
-		if !err {
+		if err {
+			fmt.Println(string(colorRed), "You entered an invalid letter", string(colorReset))
+		} else {
 			wordSaid = wordSaid + letterChoose
 			said = strings.Split(wordSaid, "\n")
 			wordString := strings.Join(said, " ")
 			fmt.Println("Already tried :", wordString)
-		} else {
-			fmt.Println(string(colorRed), "You entered an invalid letter", string(colorReset))
 		}
 	}
 	return wordSaid
