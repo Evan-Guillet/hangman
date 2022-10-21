@@ -204,3 +204,7 @@ func AsciiArt(wordUncomplet string) {
 	}
 	fmt.Println(art)
 }
+
+func Result(word string, firstOutcome string) {
+	
+}
