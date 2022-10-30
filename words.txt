@@ -37,3 +37,4 @@ rentree
 repas
 toilette
 vélo
+livre
