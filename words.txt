@@ -34,4 +34,6 @@ radiateur
 rampe
 recreation
 rentree
+repas
 toilette
+vélo

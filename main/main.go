@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"hangman"
 	"io/ioutil"
+	
 )
 
 func main() {
@@ -11,5 +11,6 @@ func main() {
 	word := hangman.ChooseWord(file)
 	firstOutcome := hangman.UncompletedWord(word)
 	hangman.AsciiArt(firstOutcome)
-	fmt.Println(hangman.VerifeChar(word, firstOutcome))
+	hangman.ResultDisplay(word, firstOutcome)
+	hangman.AddWord(file)
 }
