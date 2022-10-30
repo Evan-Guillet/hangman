@@ -4,13 +4,18 @@ import (
 	"bufio"
 	"fmt"
 	"io/ioutil"
-	"os"
 	"strings"
+	"os/exec"
+	"os"
+	"time"
+	"strconv"
 )
 
 const colorRed = "\033[1;31m"
 const colorGreen = "\033[1;32m"
 const colorReset = "\033[0m"
+const cmdClear = "\033[H\033[2J"
+var conclusion bool
 
 func LetterChoose() string { //func that return a string contane what user write in terminal
 	fmt.Print("choose a letter :")
@@ -52,63 +57,56 @@ func IsPresent(wordToFind string, letterChoose string) bool { // func returne tr
 func AlreadySaid(letterChoose string, wordSaid string) string {
 	err := false
 	var said []string
-	if letterChoose < "a" || letterChoose > "z" {
+	letter := strings.Replace(letterChoose,"\n","",-1)
+	if letter < "a" || letter > "z" {
 		err = true
-	}
-		
+	}      
 
-	if len(letterChoose) == 1 {
-		
-
-		for _, valueWordSaid := range wordSaid {
-			if letterChoose == string(valueWordSaid) {
-				return wordSaid
-			}
-		}
-	} else {
-		if !err {
-			wordSaid = wordSaid + letterChoose
-			said = strings.Split(wordSaid, "\n")
-			wordString := strings.Join(said, " ")
-			fmt.Println("Already tried :", wordString)
-		} else {
-			fmt.Println(string(colorRed), "You entered an invalid letter", string(colorReset))
-		}
+	if err {
+		fmt.Println(string(colorRed), "You entered an invalid letter", string(colorReset))
 	}
+
+	said = strings.Split(wordSaid, "\n")
+
+	wordString := strings.Join(said, " ")
+	fmt.Println("Already tried :", wordString)
+
 	return wordSaid
 }
 
-func VerifeChar(wordToFind string, wordUncomplet string) string {
+func IsSaid(wordSaid string, letterChoose string) bool {
 	isSaid := false
+	said := []rune(wordSaid)
+	for i := 0; i < len(wordSaid); i++ {
+		isSaid = false
+		if !isSaid {
+
+			if letterChoose == string(said[i]) {
+				isSaid = true
+				break
+			}
+		}
+	}
+	return isSaid
+}
+
+func VerifeChar(wordToFind string, wordUncomplet string) string {
 	attempts := 11
 	var wordSaid string
 	wordInProgresse := wordUncomplet
+	fmt.Println(AsciiArt(wordUncomplet))
 	for attempts > 1 {
 		letterChoose := LetterChoose()
 		fmt.Println()
-		said := []rune(wordSaid)
-		letter := []rune(letterChoose)
-		
-		for i := 0; i < len(wordSaid); i++ {
-			isSaid = false
-			if !isSaid {
-				if letter[0] == said[i] {
-					isSaid = true
-					break
-				}
-				
-			}
-			
-		}
 		
 		wordSaid = AlreadySaid(letterChoose, wordSaid)
 		letterChoose = strings.Replace(letterChoose, "\n", "", -1)
 		wordInProgresse = Reveal(wordToFind, wordInProgresse, letterChoose)
-		AsciiArt(wordInProgresse)
+		fmt.Println(AsciiArt(wordInProgresse))
 		fmt.Println()
 		
-
-		if !isSaid {	
+		if !IsSaid(wordSaid,letterChoose) {	
+			
 			if IsPresent(wordToFind, letterChoose) {
 				Position(attempts)
 				fmt.Println(string(colorGreen), "__________________________________________", string(colorReset))
@@ -118,6 +116,7 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 				Position(attempts)
 				fmt.Println(string(colorRed), "__________________________________________", string(colorReset))
 			}
+			wordSaid = wordSaid + letterChoose + "\n"
 		} else {
 			fmt.Println(string(colorRed), "You already choose this letter", string(colorReset))
 			attempts--
@@ -169,21 +168,22 @@ func Position(attempts int) {
 	} else {
 		fmt.Println(file[position])
 	}
-
 }
 
 func WinOrLoose(attempts int, wordToFind string) string {
 	var endPrint string
 	if attempts == 1 {
-		endPrint = "Dommage ! Vous avez perdu, le mot était :" + wordToFind
+		endPrint = "Dommage ! Vous avez perdu, le mot était :" + AsciiArt(wordToFind)
+		conclusion = false
 	} else {
-		endPrint = "Bravo ! Vous avez gagné, le mot était :" + wordToFind
+		endPrint = "Bravo ! Vous avez gagné, le mot était :" + AsciiArt(wordToFind)
+		conclusion = true
+		
 	}
 	return endPrint
 }
 
-
-func AsciiArt(wordUncomplet string) {
+func AsciiArt(wordUncomplet string) string {
 	fileIncome,_ := ioutil.ReadFile("../standard.txt")
 	file := strings.Split(string(fileIncome), ",,")
 	var letter []string
@@ -202,5 +202,36 @@ func AsciiArt(wordUncomplet string) {
 		}
 		art += "\n"
 	}
-	fmt.Println(art)
+	return art
 }
+
+func ResultDisplay(word string, firstOutcome string){
+	result := VerifeChar(word, firstOutcome)
+	duration, _ := time.ParseDuration("150ms")
+	c := exec.Command("clear")
+	c.Stdout = os.Stdout
+	c.Run()
+	
+	occ := 0
+	var color string
+	
+	for i := 31; occ < 40; i++ {
+		if i == 37 {
+			i = 31
+		}
+		color = strconv.Itoa(i)
+
+		fmt.Print(cmdClear)
+		fmt.Println("\033[1;"+color+"m")
+		fmt.Println(result)
+		if !conclusion {
+			Position(1)
+		}
+		
+		time.Sleep(duration)
+		
+    	occ++
+	}
+	fmt.Print(colorReset)
+}
+
