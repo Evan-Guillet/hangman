@@ -97,18 +97,18 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 	wordInProgresse := wordUncomplet
 	fmt.Println(AsciiArt(wordUncomplet))
 	for attempts > 1 { //
-		letterChoose := LetterChoose()
+		choosenLetter := LetterChoose()
 		fmt.Println()
 
-		wordSaid = AlreadySaid(letterChoose, wordSaid)
-		letterChoose = strings.Replace(letterChoose, "\n", "", -1)
-		wordInProgresse = Reveal(wordToFind, wordInProgresse, letterChoose)
+		wordSaid = AlreadySaid(choosenLetter, wordSaid)
+		choosenLetter = strings.Replace(choosenLetter, "\n", "", -1)
+		wordInProgresse = Reveal(wordToFind, wordInProgresse, choosenLetter)
 		fmt.Println(AsciiArt(wordInProgresse))
 		fmt.Println()
 
-		if !IsSaid(wordSaid, letterChoose) {
+		if !IsSaid(wordSaid, choosenLetter) {
 
-			if IsPresent(wordToFind, letterChoose) {
+			if IsPresent(wordToFind, choosenLetter) {
 				Position(attempts)
 				fmt.Println(string(colorGreen), "__________________________________________", string(colorReset))
 
@@ -117,7 +117,7 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 				Position(attempts)
 				fmt.Println(string(colorRed), "__________________________________________", string(colorReset))
 			}
-			wordSaid = wordSaid + letterChoose + "\n"
+			wordSaid = wordSaid + choosenLetter + "\n"
 		} else {
 			fmt.Println(string(colorRed), "You already choose this letter", string(colorReset))
 			attempts--
@@ -135,13 +135,13 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 	return WinOrLoose(attempts, wordToFind)
 }
 
-func Reveal(wordToFind string, wordInProgresse string, letterChoose string) string {
+func Reveal(wordToFind string, wordInProgresse string, choosenLetter string) string {
 	word := []rune(wordInProgresse)
 	index := 0
-	if len(letterChoose) > 1 { //check if choosenLetter is a word or a letter
-		for ii, valueLetterChoose := range letterChoose {
+	if len(choosenLetter) > 1 { //check if choosenLetter is a word or a letter
+		for ii, valuechoosenLetter := range choosenLetter {
 			for jj, valueWordToFind := range wordToFind {
-				if ii == jj && valueWordToFind != valueLetterChoose { //check each letter of choosenLetter and wordToFind to know if is egals
+				if ii == jj && valueWordToFind != valuechoosenLetter { //check each letter of choosenLetter and wordToFind to know if is egals
 					return wordInProgresse
 				}
 			}
@@ -149,7 +149,7 @@ func Reveal(wordToFind string, wordInProgresse string, letterChoose string) stri
 		return wordToFind
 	} else {
 		for _, letter := range wordToFind {
-			for _, valueLettreChoose := range letterChoose {
+			for _, valueLettreChoose := range choosenLetter {
 				if string(letter) == string(valueLettreChoose) { //check if choosenLetter is in the wordToFind
 					word[index] = rune(letter)
 				}
@@ -161,9 +161,9 @@ func Reveal(wordToFind string, wordInProgresse string, letterChoose string) stri
 }
 
 func Position(attempts int) {
-	hangFile, _ := ioutil.ReadFile("../position_hangman.txt")
-	file := strings.Split(string(hangFile), ",,")
-	position := 11 - attempts //
+	hangFile, _ := ioutil.ReadFile("../position_hangman.txt") 
+	file := strings.Split(string(hangFile), ",,") //crete a table of string with the position of the hangman
+	position := 11 - attempts //relates the position to the attemps
 	if position < 0 {
 		fmt.Println(file[0])
 	} else {
@@ -186,17 +186,17 @@ func WinOrLoose(attempts int, wordToFind string) string {
 
 func AsciiArt(wordUncomplet string) string {
 	fileIncome, _ := ioutil.ReadFile("../standard.txt")
-	file := strings.Split(string(fileIncome), ",,")
+	file := strings.Split(string(fileIncome), ",,") //crete a table of string with each Ascii letter
 	var letter []string
 	word := []rune(wordUncomplet)
 	var art string
-	for j := 0; j < 8; j++ {
-		for k := 0; k < len(word); k++ {
-			if word[k] >= 'a' && word[k] <= 'z' {
+	for j := 0; j < 8; j++ { //loop to define the layer of the ascii letter to print
+		for k := 0; k < len(word); k++ { //loop to define all the letter to transform
+			if word[k] >= 'a' && word[k] <= 'z' { 
 				difference := int(word[k]) - int('a')
 				letter = strings.Split(string(file[33+difference]), "\n")
 				art += strings.Replace(letter[j], "\r", "", -1)
-			} else {
+			} else { // if it's not a letter print the underscore
 				letter = strings.Split(string(file[63]), "\n")
 				art += strings.Replace(letter[j], "\r", "", -1)
 			}
@@ -207,16 +207,16 @@ func AsciiArt(wordUncomplet string) string {
 }
 
 func ResultDisplay(word string, firstOutcome string) {
-	result := VerifeChar(word, firstOutcome)
-	duration, _ := time.ParseDuration("150ms")
+	result := VerifeChar(word, firstOutcome) //varaiable for the answer
+	duration, _ := time.ParseDuration("150ms") //define a duration off sleep for the program
 	c := exec.Command("clear")
 	c.Stdout = os.Stdout
-	c.Run()
+	c.Run() // clear the terminal
 
 	occ := 0
 	var color string
 
-	for i := 31; occ < 40; i++ {
+	for i := 31; occ < 40; i++ { //loop to define the color of the string
 		if i == 37 {
 			i = 31
 		}
@@ -225,7 +225,7 @@ func ResultDisplay(word string, firstOutcome string) {
 		fmt.Print(cmdClear)
 		fmt.Println("\033[1;" + color + "m")
 		fmt.Println(result)
-		if !conclusion {
+		if !conclusion { // if the user loose it print the hangman as well
 			Position(1)
 		}
 
