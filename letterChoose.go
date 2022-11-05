@@ -96,21 +96,21 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 	var wordSaid string
 	wordInProgresse := wordUncomplet
 	fmt.Println(AsciiArt(wordUncomplet))
-	for attempts > 1 { //
-		choosenLetter := LetterChoose()
+	for attempts > 1 { //While the user have more than 1 attempts
+		choosenLetter := LetterChoose() //call the function LetterChoose
 		fmt.Println()
 
-		wordSaid = AlreadySaid(choosenLetter, wordSaid)
+		wordSaid = AlreadySaid(choosenLetter, wordSaid) //list of the word already choose
 		choosenLetter = strings.Replace(choosenLetter, "\n", "", -1)
-		wordInProgresse = Reveal(wordToFind, wordInProgresse, choosenLetter)
-		fmt.Println(AsciiArt(wordInProgresse))
+		wordInProgresse = Reveal(wordToFind, wordInProgresse, choosenLetter) 
+		fmt.Println(AsciiArt(wordInProgresse)) //reveal the letter choose if in the word
 		fmt.Println()
 
 		if !IsSaid(wordSaid, choosenLetter) {
 
 			if IsPresent(wordToFind, choosenLetter) {
-				Position(attempts)
-				fmt.Println(string(colorGreen), "__________________________________________", string(colorReset))
+				Position(attempts) //print the hangman
+				fmt.Println(string(colorGreen), "__________________________________________", string(colorReset))//graphic feature
 
 			} else {
 				attempts--
@@ -127,8 +127,8 @@ func VerifeChar(wordToFind string, wordUncomplet string) string {
 
 		fmt.Println()
 		fmt.Println("remaining try :", attempts-1)
-		fmt.Println("\n\n")
-		if wordInProgresse == wordToFind {
+		fmt.Println("\n\n") //graphic feature
+		if wordInProgresse == wordToFind { //allows to propose a whole word
 			return WinOrLoose(attempts, wordToFind)
 		}
 	}
